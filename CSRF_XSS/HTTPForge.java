@@ -1,8 +1,11 @@
 //A dummy social networking site www.xsslabelgg.com was used to perform a stored XSS attack in this case. 
-//The first part of this XSS attack was to steal the victim's session cookie using a simple script on the attacker's profile page.
+//The first part of this attack was to steal the victim's session cookie using a simple script on the attacker's profile page
 //that would request for an image.
-//This script would generate a GET request that would be sent to the image source. The source in turn would be the attacker's IP address and port number. The attacker's machine was to be configured to listen for this communication with an simple server.
-//The next step was to forge a GET request that would use the cookie obtained previously to take over the the victim's session and perform an action which in this case is adding a friend.   
+//This script would generate a GET request that would be sent to the image source. 
+//The source in turn would be the attacker's IP address and port number. 
+//The attacker's machine was to be configured to listen for this communication with an simple server.
+//The next step was to forge a GET request that would use the cookie obtained previously to take over the the victim's session
+//and perform an action which in this case is adding a friend.   
 import java.io.*;
 import java.net.*;
 public class HTTPForge {
