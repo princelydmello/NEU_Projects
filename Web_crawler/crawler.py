@@ -1,3 +1,5 @@
+#This program searches each page on the website for a secret 
+
 #!/usr/bin/python
 
 from bs4 import BeautifulSoup
@@ -22,9 +24,9 @@ username = args.username
 password = args.password
 link_queue = []
 visited = []
-default_netloc = "data.cityofboston.gov"
-host = "data.cityofboston.gov"
-login_link = "https://data.cityofboston.gov/api/views/awu8-dc52/rows.json"
+default_netloc = "www.fakebook.com"
+host = "www.fakebook.com"
+login_link = "http://www.fakebook.com/login.jsp"
 secret_flags = []
 
 def sendRequest(host,request):
