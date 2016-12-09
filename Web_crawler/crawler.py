@@ -1,4 +1,4 @@
-#This program searches each page on the website for a secret 
+#This program searches each page on the website for a secret flag
 
 #!/usr/bin/python
 
@@ -28,6 +28,7 @@ default_netloc = "www.fakebook.com"
 host = "www.fakebook.com"
 login_link = "http://www.fakebook.com/login.jsp"
 secret_flags = []
+
 
 def sendRequest(host,request):
 
@@ -83,7 +84,6 @@ def login_to_fakebook(login_link,username,password,csrf):
     loginresponse = sendRequest(parsedLink.netloc,loginrequest)
     return loginresponse
 
-
 csrf = getCSRF(login_link)
 
 response = login_to_fakebook(login_link,username,password,csrf)
@@ -94,10 +94,7 @@ link_queue.append(response.location)
 
 default_netloc = response.location
 
-mutex = Lock()
-
-
-def crawler_thread(csrf,session_id):
+def webcrawler(csrf,session_id):
 
 
     sent_links = []
@@ -111,13 +108,9 @@ def crawler_thread(csrf,session_id):
         while link_queue.__len__() > 0:
 
 
-            mutex.acquire()
-
-
             try:
                 link = link_queue.pop(0)
             except IndexError:
-                mutex.release()
                 break
             if link not in visited:
                 #print sent_links.__len__()
@@ -140,10 +133,9 @@ def crawler_thread(csrf,session_id):
 
                 except socket.error as err:
                     link_queue.insert(0,link)
-                    mutex.release()
                     #s.close()
                     break
-            mutex.release()
+            
 
     def process_response(response):
 
@@ -183,7 +175,7 @@ def crawler_thread(csrf,session_id):
             except socket.error:
                 break
             response = response + received
-            mutex.acquire()
+            
             while response.count("HTTP/1.1") >= 2:
                 httpresponse = HTTPresponse()
                 second_http_index = response.find("HTTP/1.1","HTTP/1.1".__len__())
@@ -193,13 +185,11 @@ def crawler_thread(csrf,session_id):
 
                     process_response(httpresponse)
 
-                response = response[second_http_index:]
-            mutex.release()
+                response = response[second_http_index:
 
             if received == "":
                 break
-
-        mutex.acquire()
+                                    
         while response.count("HTTP/1.1") >= 2:
                 httpresponse = HTTPresponse()
                 second_http_index = response.find("HTTP/1.1","HTTP/1.1".__len__())
@@ -221,32 +211,19 @@ def crawler_thread(csrf,session_id):
                 if sent_links in visited:
                     visited.remove(sent_link)
         s.close()
-        mutex.release()
 
-    thread_socket = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
+    sock = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
 
-    thread_socket.connect((host,80))
+    sock.connect((host,80))
 
-    sending = Thread(target=sendRequests,args=(csrf,session_id,thread_socket))
-    sending.setDaemon(True)
-    sending.setName("Sending Thread for "+threading.current_thread.__name__)
-    sending.start()
-
-    receiving = Thread(target=receive_responses, args=(thread_socket,))
-    receiving.setDaemon(True)
-    receiving.setName("Receiving Thread for "+threading.current_thread.__name__)
-    receiving.start()
-
+    sendRequests(csrf,session_id,sock)
+    
+    receive_responses(sock)
+    
 while True:
 
-    if threading.enumerate().__len__() <= max_connections*2 and link_queue.__len__() > 0:
-
-
-        t = Thread(target=crawler_thread,args=(csrf,session_id))
-        t.setDaemon(True)
-        t.start()
-
-    if secret_flags.__len__() == 5:
+   webcrawler(csrf,session_id)
+   if secret_flags.__len__() == 5:
         break
 
 for secret_flag in secret_flags:
