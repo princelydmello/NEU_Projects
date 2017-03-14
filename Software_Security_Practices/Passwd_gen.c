@@ -1,4 +1,4 @@
-// Program to generate all combinations of 62 characters of length 16 and generating a hash for them.   
+// Program to generate nonrepeating combinations of 62 characters of length 16 using recursion and generating a hash for them.   
 
 #include <stdio.h>
 #include <openssl/md5.h>
